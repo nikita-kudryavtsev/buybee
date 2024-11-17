@@ -14,6 +14,7 @@ import {
 
 definePageMeta({
   layout: 'auth',
+  title: 'Login',
 })
 
 type form_type = 'login' | 'register'
