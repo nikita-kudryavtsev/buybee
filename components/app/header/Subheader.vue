@@ -4,7 +4,7 @@ import { BabyIcon, PlaneIcon, BellRingIcon, HomeIcon, PlugIcon, ShirtIcon, Perce
 const linksData = [
   {
     title: 'Новый год',
-    to: '/new-year',
+    to: '/category/new-year',
     icon: BellRingIcon,
   },
   {
@@ -19,7 +19,7 @@ const linksData = [
   },
   {
     title: 'Электроника',
-    to: '/new-year',
+    to: '/category/electronics',
     icon: PlugIcon,
   },
   {

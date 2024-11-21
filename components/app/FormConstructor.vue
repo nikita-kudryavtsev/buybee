@@ -1,12 +1,13 @@
 <script setup lang="ts">
 
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
-import { Input } from "~/components/ui/input";
 
 interface IFormConstructorField {
   key: string,
   display: string,
   type: 'string' | 'password'
+  component: Component
+  description: string
 }
 
 interface IFormConstructorData {
@@ -21,30 +22,25 @@ const props = defineProps<{
   data: IFormConstructorData
 }>()
 
+const emits = defineEmits(['update:modelValue'])
 </script>
 
 <template>
-  <div class="w-[360px] space-y-[100px] ">
-    <form @submit="data.submitAction" class="space-y-3">
-      <div class="text-center space-y-3">
-        <h2 class="text-xl font-medium">{{ data.title }}</h2>
-        <div class="text-[#71717A]"> {{ data.subtitle }} </div>
-      </div>
-
+  <div class="w-full">
+    <form @submit="data.submitAction" class="space-y-3" @update="() => console.log('uop')">
       <FormField v-for="field in data.fields" v-slot="{ componentField }" :name="field.key">
         <FormItem>
           <FormLabel>{{ field.display }} </FormLabel>
           <FormControl>
-            <Input type="text" v-bind="componentField"/>
+            <component :is="field.component" v-bind="componentField"/>
           </FormControl>
-
+          <FormDescription>
+            {{ field.description }}
+          </FormDescription>
           <FormMessage/>
         </FormItem>
       </FormField>
-
-      <Button type="submit" class="w-full">
-        {{ data.submitText }}
-      </Button>
+      <slot name="submit"/>
     </form>
   </div>
 </template>

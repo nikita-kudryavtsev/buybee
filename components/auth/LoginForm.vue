@@ -1,45 +1,30 @@
 <script setup lang="ts">
-import FormConstructor from "~/components/construstors/FormConstructor.vue";
+import FormConstructor from "~/components/auth/AuthFormConstructor.vue";
 import { toTypedSchema } from "@vee-validate/zod";
-import * as z from "zod";
 import { useForm } from "vee-validate";
+import { useToast } from "~/components/ui/toast";
+import { userLoginSchema } from "~/validation-schemas/user/loginSchema";
 
 const router = useRouter()
-
-const registrationFormSchema = toTypedSchema(
-    z.object({
-      login: z.string({
-        required_error: "Поле обязательно для ввода",
-      }),
-      password: z
-          .string()
-          .min(6, {
-            message: "Пароль должен быть не менее 6 символов",
-          })
-          .max(30, {
-            message: "Максимальная длина пароля 30 символов",
-          }),
-    })
-);
+const { toast } = useToast()
 
 const { handleSubmit } = useForm({
-  validationSchema: registrationFormSchema
+  validationSchema: toTypedSchema(userLoginSchema)
 })
 
 const onSubmit = handleSubmit(async ({ login, password }) => {
-  const { data, error } = await useFetch('api/user/log-in', {
+  await $fetch<{ success: boolean }>('api/auth/log-in', {
     method: 'POST',
     body: { login, password }
+  }).then((response) => {
+    response.success && router.push('/')
+  } ).catch((error) => {
+    toast({
+      title: 'Ошибка при создании пользователя!',
+      description: error.data.message,
+      variant: 'destructive'
+    })
   })
-  if (error.value) {
-    console.log(error.value?.data.statusMessage)
-    return
-  }
-  if (data.value) {
-    const { accessToken, refreshToken, userData } = data.value as any
-    router.push('/')
-  }
-  // formsData.value.action(values)
 })
 
 const formData = {
@@ -58,7 +43,3 @@ const formData = {
 <template>
   <FormConstructor :data="formData"/>
 </template>
-
-<style scoped>
-
-</style>

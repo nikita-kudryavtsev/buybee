@@ -17,6 +17,7 @@ model User {
   firstName String?
   lastName  String?
   posts     Post[]
+  // bio       String?
 }
 
 model Post {

@@ -1,30 +1,35 @@
 <script setup lang="ts">
-
 import { Avatar } from "~/components/ui/avatar";
 import { DropdownMenu } from "~/components/ui/dropdown-menu";
 import { SettingsIcon, HeartIcon, ScissorsIcon, LogOutIcon, MailIcon} from "lucide-vue-next";
 
 const router = useRouter()
 
+const { userData } = storeToRefs(useUserStore())
+
 const menuItems = [
-  { label: 'Промокоды', to: '/profile/promocodes', icon: ScissorsIcon },
-  { label: 'Избранное', to: '/profile/favorites', icon: HeartIcon },
-  { label: 'Настройки', to: '/profile/settings', icon: SettingsIcon },
-  { label: 'Сообщения', to: '/profile/messages', icon: MailIcon },
+  { label: 'Промокоды', to: '/user/promocodes', icon: ScissorsIcon },
+  { label: 'Избранное', to: '/user/favorites', icon: HeartIcon },
+  { label: 'Настройки', to: '/user/settings', icon: SettingsIcon },
+  { label: 'Сообщения', to: '/user/messages', icon: MailIcon },
 ]
 
 const onLogout = () => {
   router.push('/auth')
 }
+
+
 </script>
 
 <template>
-  <DropdownMenu>
+
+  <Button v-if="!userData">Войти</Button>
+  <DropdownMenu v-else>
     <DropdownMenuTrigger as-child>
       <Button variant="ghost" class="relative h-8 w-8 rounded-full">
-        <Avatar class="h-8 w-8">
-          <AvatarImage src="/avatars/01.png" alt="@shadcn" />
-          <AvatarFallback>SC</AvatarFallback>
+        <Avatar>
+          <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+          <AvatarFallback />
         </Avatar>
       </Button>
     </DropdownMenuTrigger>
@@ -32,10 +37,10 @@ const onLogout = () => {
       <DropdownMenuLabel class="font-normal flex">
         <div class="flex flex-col space-y-1">
           <p class="text-sm font-medium leading-none">
-            Имя пользователя
+            {{ userData.firstName }} {{ userData.lastName }}
           </p>
           <p class="text-xs leading-none text-muted-foreground">
-            m@example.com
+            Описание
           </p>
         </div>
       </DropdownMenuLabel>

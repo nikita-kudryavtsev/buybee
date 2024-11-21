@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import LoginForm from "~/components/auth/LoginForm.vue";
-import RegistationForm from "~/components/auth/RegistationForm.vue";
+import RegistrationForm from "~/components/auth/RegistrationForm.vue";
 
 definePageMeta({
   layout: 'auth',
@@ -11,10 +11,9 @@ type form_type = 'login' | 'registration'
 
 const formType = ref<form_type>('login')
 
-
 const toggleFormType = () => formType.value === 'login' ? formType.value = 'registration' : formType.value = 'login'
 
-const formComponent = computed(() => formType.value === 'login' ? LoginForm : RegistationForm)
+const formComponent = computed(() => formType.value === 'login' ? LoginForm : RegistrationForm)
 </script>
 
 <template>
@@ -22,6 +21,6 @@ const formComponent = computed(() => formType.value === 'login' ? LoginForm : Re
     {{ formType === 'login' ? 'Зарегестрироваться' : 'Войти' }}
   </Button>
   <div class="w-[360px] space-y-[100px] ">
-    <component :is="formComponent" />
+    <component :is="formComponent"/>
   </div>
 </template>

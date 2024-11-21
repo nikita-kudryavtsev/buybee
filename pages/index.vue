@@ -3,7 +3,10 @@
 </script>
 
 <template>
-  <div>index</div>
+  <Card class="w-60">
+    fdsfds
+  </Card>
+
 </template>
 
 <style scoped>

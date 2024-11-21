@@ -1,17 +1,22 @@
 import { PrismaClient } from '@prisma/client'
 import { hash } from "bcrypt"
-
+import { userRegisterSchema } from "~/validation-schemas/user/registerSchema";
 const prisma = new PrismaClient()
 
 export default defineEventHandler(async (event) => {
-  const { login, password } = await readBody(event)
+  const { firstName, lastName, login, password } = await readBody(event)
 
+  const isValid = userRegisterSchema.safeParse({ firstName, lastName, login, password })
 
-  console.log({ login, password})
+  if (!isValid.success) {
+    throw createError({
+      statusCode: 400,
+      message: 'Ошибка валидации формы'
+    })
+  }
+
   const userExists = await prisma.user.findFirst({
-    where: {
-      login
-    }
+    where: { login }
   })
 
   if (userExists) {
@@ -27,6 +32,8 @@ export default defineEventHandler(async (event) => {
     data: {
       login,
       password: hashPassword,
+      lastName,
+      firstName
     },
   })
 
