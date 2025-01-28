@@ -35,7 +35,7 @@ const props = defineProps<{
         <FormItem>
           <FormLabel>{{ field.display }} </FormLabel>
           <FormControl>
-            <Input type="text" v-bind="componentField"/>
+            <Input :type="field.type" v-bind="componentField"/>
           </FormControl>
 
           <FormMessage/>

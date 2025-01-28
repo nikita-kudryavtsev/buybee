@@ -1,10 +1,12 @@
-import prisma from "~/lib/prisma";
-import { decodeToken } from "~/server/api/utils/token";
+import prisma from "~/lib/utils/prisma";
+import { decodeToken } from "~/server/utils/tokens";
+import authMiddleware from "~/server/serverMiddleware/auth";
 
 export default defineEventHandler(async (event) => {
-  const { firstName, lastName, login } = await readBody(event)
-  console.log('TITA')
-  // const token = getHeader(event, 'Authorization')?.split(' ')[1]
+  await authMiddleware(event)
+
+  const { firstName, lastName, login, bio, roleId } = await readBody(event)
+
   const refreshToken = getCookie(event, 'refreshToken');
 
   if (!refreshToken) {
@@ -22,7 +24,9 @@ export default defineEventHandler(async (event) => {
       data: {
         firstName,
         lastName,
-        login
+        login,
+        bio,
+        roleId,
       }
     })
   } catch (error) {

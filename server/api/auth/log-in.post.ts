@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcrypt'
-import { generateTokens } from "~/server/api/utils/token";
+import { generateTokens } from "~/server/utils/tokens";
 import { userLoginSchema } from "~/validation-schemas/user/loginSchema";
 
 const prisma = new PrismaClient()
@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
   if (!user) {
     throw createError({
       statusCode: 403,
-      message: `Пользователя ${login} не существует`
+      message: `Пользователя ${login} не существует в системе!`
     })
   }
 
@@ -34,7 +34,7 @@ export default defineEventHandler(async (event) => {
   if (!isValidPassword) {
     throw createError({
       statusCode: 403,
-      message: 'Неверный пароль'
+      message: 'Неверный пароль!'
     })
   }
 
@@ -51,5 +51,6 @@ export default defineEventHandler(async (event) => {
     maxAge: 60 * 60 * 24 * 7,
     path: '/'
   })
+
   return { success: true }
 })

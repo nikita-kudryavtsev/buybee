@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
   if (!isValid.success) {
     throw createError({
       statusCode: 400,
-      message: 'Ошибка валидации формы'
+      message: 'Ошибка валидации формы!'
     })
   }
 
@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
   if (userExists) {
     throw createError({
       statusCode: 400,
-      statusMessage: `Пользователь с логином ${login} уже существует в системе`
+      statusMessage: `Пользователь с логином ${login} уже существует в системе!`
     })
   }
 
@@ -39,5 +39,5 @@ export default defineEventHandler(async (event) => {
 
   setResponseStatus(event, 201)
 
-  return { message: `Пользователь ${login} создан` }
+  return { message: `Пользователь ${login} создан!` }
 })

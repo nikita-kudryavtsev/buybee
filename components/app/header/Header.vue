@@ -3,17 +3,36 @@ import UserMenu from "~/components/app/header/UserMenu.vue";
 import ThemeSwitcher from "~/components/app/header/ThemeSwitcher.vue";
 import {ShoppingBasketIcon, HeartIcon, MenuIcon} from "lucide-vue-next";
 import Subheader from "~/components/app/header/Subheader.vue";
+import { useCategoriesQuery } from "~/queries/categories";
+
+const { data: categories, isLoading } = useCategoriesQuery()
 </script>
 
 <template>
   <header class="border-b space-y-2 pb-3 mb-6" >
     <div class="h-16 flex justify-between items-center px-4 space-x-6">
+      <NuxtLink to="/" class="h-full flex items-center">
+        <img src="/logo.png" alt="лого">
+      </NuxtLink>
+<!--      TODO: добавить спиннер -->
+      <DropdownMenu v-if="!isLoading">
+        <DropdownMenuTrigger>
+          <Button>
+            Каталог
+            <MenuIcon/>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuLabel>Категории товаров</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem v-for="category in categories">
+            <NuxtLink :to="category.url">
+              {{ category.display }}
+            </NuxtLink>
+          </DropdownMenuItem>
 
-      <div class="bg-blue-50 text-nowrap px-2 flex">Какой-то логотип</div>
-      <Button>
-        Каталог
-        <MenuIcon/>
-      </Button>
+        </DropdownMenuContent>
+      </DropdownMenu>
       <Input placeholder="Найти товары"/>
 
       <Button variant="ghost">
@@ -25,37 +44,9 @@ import Subheader from "~/components/app/header/Subheader.vue";
 
       <ThemeSwitcher/>
       <UserMenu/>
+
     </div>
 
     <Subheader />
   </header>
 </template>
-
-
-<!--    <TooltipProvider>-->
-<!--      <Tooltip>-->
-<!--        <TooltipTrigger>-->
-<!--        <Button variant="ghost">-->
-<!--          <HeartIcon/>-->
-<!--        </Button>-->
-<!--        </TooltipTrigger>-->
-<!--        <TooltipContent>-->
-<!--          <p>Избранное</p>-->
-<!--        </TooltipContent>-->
-<!--      </Tooltip>-->
-<!--    </TooltipProvider>-->
-
-<!--    <TooltipProvider>-->
-<!--      <Tooltip>-->
-<!--        <TooltipTrigger>-->
-<!--          <Button variant="ghost" class="!ml-0">-->
-<!--            <ShoppingBasketIcon/>-->
-<!--          </Button>-->
-<!--        </TooltipTrigger>-->
-<!--        <TooltipContent>-->
-<!--          <p>Корзина</p>-->
-<!--        </TooltipContent>-->
-<!--      </Tooltip>-->
-<!--    </TooltipProvider>-->
-<style scoped>
-</style>

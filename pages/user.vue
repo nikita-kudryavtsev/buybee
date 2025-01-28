@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { Separator } from "radix-vue";
-import { cn } from "~/lib/utils";
 import { HeartIcon, MailIcon, ScissorsIcon, SettingsIcon } from "lucide-vue-next";
-// import router from "#app/plugins/router";
+import { cn } from "~/lib/utils/utils";
 
+definePageMeta({
+  middleware: 'auth'
+})
 const tabs = [
   { label: 'Промокоды', href: '/user/promocodes', icon: ScissorsIcon },
   { label: 'Избранное', href: '/user/favorites', icon: HeartIcon },
@@ -18,12 +20,6 @@ const selectedTab = computed(() => tabs.find(item => item.href === route.path))
 
 <template>
   <div class="mx-auto my-8 w-fit">
-<!--    <div class="pb-6">-->
-<!--      <div class="text-2xl font-bold">Settings</div>-->
-<!--      <span class="text-muted-foreground">-->
-<!--        Manage your account settings and set e-mail preferences.-->
-<!--      </span>-->
-<!--    </div>-->
     <Separator/>
 
     <div class="flex w-full gap-6">
@@ -32,14 +28,8 @@ const selectedTab = computed(() => tabs.find(item => item.href === route.path))
           <Button
               variant="ghost"
               class="w-full hover:bg-muted text-left justify-start gap-4"
-              :class="route.path === `${tab.href}` && 'bg-muted hover:bg-muted'"
+              :class="cn('w-full hover:bg-muted text-left justify-start gap-4', route.path === `${tab.href}` && 'bg-muted hover:bg-muted')"
           >
-<!--            :class="-->
-<!--            cn(-->
-<!--            'w-full text-left justify-start',-->
-<!--            $route.path === `${tab.href}` && 'bg-muted hover:bg-muted'-->
-<!--            )-->
-<!--            "-->
             <component :is="tab.icon"/>
             {{ tab.label }}
           </Button>

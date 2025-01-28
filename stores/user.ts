@@ -6,6 +6,7 @@ export const useUserStore = defineStore('user', () => {
   const setUserData = (payload: IUser | null) => {
     userData.value = payload;
   }
+
   return {
     userData,
     setUserData

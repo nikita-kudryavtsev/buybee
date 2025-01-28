@@ -21,6 +21,8 @@ const formComponent = computed(() => formType.value === 'login' ? LoginForm : Re
     {{ formType === 'login' ? 'Зарегестрироваться' : 'Войти' }}
   </Button>
   <div class="w-[360px] space-y-[100px] ">
-    <component :is="formComponent"/>
+    <KeepAlive>
+      <component :is="formComponent" v-model:form-type="formType"/>
+    </KeepAlive>
   </div>
 </template>

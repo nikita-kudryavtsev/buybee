@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import prisma from "~/lib/prisma";
+import prisma from "~/lib/utils/prisma";
 import { H3Event } from "h3";
 
 export default async function (event: H3Event) {

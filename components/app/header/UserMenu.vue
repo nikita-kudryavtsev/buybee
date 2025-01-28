@@ -10,25 +10,27 @@ const { userData } = storeToRefs(useUserStore())
 const menuItems = [
   { label: 'Промокоды', to: '/user/promocodes', icon: ScissorsIcon },
   { label: 'Избранное', to: '/user/favorites', icon: HeartIcon },
-  { label: 'Настройки', to: '/user/settings', icon: SettingsIcon },
+  { label: 'Профиль', to: '/user/settings', icon: SettingsIcon },
   { label: 'Сообщения', to: '/user/messages', icon: MailIcon },
 ]
 
+const userStore = useUserStore()
+
 const onLogout = () => {
-  router.push('/auth')
+  userStore.setUserData(null)
 }
 
-
+const goToAuthPage = () => router.push('/auth')
 </script>
 
 <template>
-
-  <Button v-if="!userData">Войти</Button>
+  <Button v-if="!userData" @click="goToAuthPage" >Войти</Button>
   <DropdownMenu v-else>
     <DropdownMenuTrigger as-child>
       <Button variant="ghost" class="relative h-8 w-8 rounded-full">
         <Avatar>
-          <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+<!--          <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />-->
+          <AvatarImage :src="userData.profilePhoto ? userData.profilePhoto : 'https://github.com/shadcn.png'" alt="photo" />
           <AvatarFallback />
         </Avatar>
       </Button>
@@ -52,7 +54,6 @@ const onLogout = () => {
             <component :is="item.icon"/>
             {{ item.label }}
           </DropdownMenuItem>
-
         </NuxtLink>
 
       </DropdownMenuGroup>

@@ -1,4 +1,4 @@
-import { decodeToken, generateTokens } from "~/server/api/utils/token";
+import { decodeToken, generateTokens } from "~/server/utils/tokens";
 import jwt from "jsonwebtoken";
 
 export default defineEventHandler(async (event) => {
@@ -19,7 +19,6 @@ export default defineEventHandler(async (event) => {
       message: 'Ошибка при обновлении токена'
     })
   }
-  console.log('!!')
   const { accessToken: newAccessToken, refreshToken: newRefreshToken } = generateTokens({ userId })
 
   setCookie(event, 'accessToken', newAccessToken, {

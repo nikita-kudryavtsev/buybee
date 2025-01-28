@@ -11,19 +11,57 @@ datasource db {
 }
 
 model User {
-  id        Int     @id @default(autoincrement())
-  login     String
-  password  String
-  firstName String?
-  lastName  String?
-  posts     Post[]
-  // bio       String?
+  id           Int     @id @default(autoincrement())
+  login        String
+  password     String
+  firstName    String?
+  lastName     String?
+  profilePhoto String?
+  roleId       String? // Ссылка на роль
+  role         Role?   @relation(fields: [roleId], references: [id]) // Связь с моделью Role
+  bio          String?
 }
 
-model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  published Boolean @default(true)
-  authorId  Int
-  author    User    @relation(fields: [authorId], references: [id])
+model Role {
+  id          String  @id @default(uuid()) // Уникальный идентификатор роли
+  name        String  @unique // Уникальное имя роли (например, "admin", "user")
+  display     String // Читаемое значение роли
+  description String? // Описание роли (опционально)
+  // Связь с пользователями
+  users       User[]
+  priority    Int // Приоритет пользователя в системе
+}
+
+model Category {
+  id            Int            @id @default(autoincrement())
+  name          String
+  display       String // Название для отображеничя
+  url           String // Путь до нужной страницы
+  icon          String // Название иконки
+  Product       Product[]
+  productGroups ProductGroup[] // Связь с группами продуктов
+}
+
+model ProductGroup {
+  id          Int       @id @default(autoincrement())
+  name        String
+  display     String?
+  description String?
+  url         String?
+  categoryId  Int? // Внешний ключ к Category
+  category    Category? @relation(fields: [categoryId], references: [id])
+  products    Product[] // Связь с продуктами
+}
+
+model Product {
+  id             Int           @id @default(autoincrement())
+  name           String
+  display        String?
+  description    String?
+  url            String?
+  price          Float
+  productGroupId Int? // Внешний ключ к ProductGroup
+  productGroup   ProductGroup? @relation(fields: [productGroupId], references: [id])
+  Category       Category?     @relation(fields: [categoryId], references: [id])
+  categoryId     Int?
 }

@@ -1,17 +1,20 @@
 <script setup lang="ts">
-import FormConstructor from "~/components/app/FormConstructor.vue";
 import { Input } from "~/components/ui/input";
 import { toTypedSchema } from "@vee-validate/zod";
-import * as z from "zod";
 import { Textarea } from "~/components/ui/textarea";
 import { useForm } from "vee-validate";
-
-const { fetchWithAuth } = useApi()
+import { toast } from "~/components/ui/toast";
+import AppSelect from "~/components/ui/customs/AppSelect.vue";
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
+import { useRolesQuery } from "~/queries/roles";
+import { editUserSchema } from "~/validation-schemas/user/editSchema";
 
 const userStore = useUserStore()
 
+const { data: roleList } = useRolesQuery()
+
 const setUserData = () => {
-  return fetchWithAuth('/api/user/get-user').then(response => useUserStore(s))
+  return httpClient('/api/user/get-user').then(response => userStore.setUserData(response))
 }
 
 onMounted(async () => {
@@ -19,49 +22,26 @@ onMounted(async () => {
   setValues(userStore.userData)
 })
 
-const fieldsSchema = toTypedSchema(
-    z.object({
-      firstName: z.string({
-        required_error: "Поле обязательно для ввода",
-      }).min(1, { message: "Поле обязательно для ввода" }),
-      lastName: z
-          .string().min(1, { message: "Поле обязательно для ввода" }),
-      login: z
-          .string().min(1, { message: "Поле обязательно для ввода" }),
-    })
-);
-
 const { handleSubmit, setValues} = useForm({
-  validationSchema: fieldsSchema,
+  validationSchema: toTypedSchema(editUserSchema),
 })
 
 const onSubmit = handleSubmit(async (values) => {
-  const token = localStorage.getItem('accessToken')
-  await $fetch('/api/user/edit', {
+  httpClient('/api/user/edit', {
     method: 'POST',
     body: values,
-    headers: {
-      'Authorization': `Bearer ${token}`
-    }
-  }).then((response) => {
-    console.log(response)
+  }).then(response => {
+    toast({
+      title: 'Успешно!',
+      description: response.message,
+      variant: 'success'
+    })
   }).catch((error) => {
     console.error(error)
   })
 })
 
 const onReset = () => setValues(userStore.userData)
-const formData = {
-  title: 'Профиль',
-  fields: [
-    { key: 'firstName', display: 'Имя', type: 'string', description: '', component: Input },
-    { key: 'lastName', display: 'Фамилия', type: 'string', description: '', component: Input },
-    { key: 'login', display: 'Логин', type: 'string', description: '', component: Input },
-    { key: 'bio', display: 'О себе', type: 'string', description: 'Напишите что-нибудь', component: Textarea },
-  ],
-  submitText: 'Применить',
-  submitAction: onSubmit,
-}
 </script>
 
 <template>
@@ -69,16 +49,68 @@ const formData = {
     <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
     <AvatarFallback>CN</AvatarFallback>
   </Avatar>
-  <FormConstructor :data="formData" >
-    <template #submit>
-      <div class="flex gap-4">
-        <Button type="submit">
-          Применить
-        </Button>
-        <Button variant="outline" @click.prevent="onReset">
-          Сбросить
-        </Button>
-      </div>
-    </template>
-  </FormConstructor>
+
+  <form @submit="onSubmit" class="space-y-3">
+    <FormField v-slot="{ componentField }" name="firstName">
+      <FormItem>
+        <FormLabel> Имя </FormLabel>
+        <FormControl>
+          <Input v-bind="componentField" />
+        </FormControl>
+        <FormMessage/>
+      </FormItem>
+    </FormField>
+
+    <FormField v-slot="{ componentField }" name="lastName">
+      <FormItem>
+        <FormLabel> Фамилия </FormLabel>
+        <FormControl>
+          <Input v-bind="componentField" />
+        </FormControl>
+        <FormMessage/>
+      </FormItem>
+    </FormField>
+
+    <FormField v-slot="{ componentField }" name="login">
+      <FormItem>
+        <FormLabel> Логин </FormLabel>
+        <FormControl>
+          <Input v-bind="componentField" />
+        </FormControl>
+        <FormMessage/>
+      </FormItem>
+    </FormField>
+
+    <FormField v-slot="{ componentField }" name="roleId">
+      <FormItem>
+        <FormLabel> Роль </FormLabel>
+        <FormControl>
+          <AppSelect v-bind="componentField" :items="roleList"/>
+        </FormControl>
+        <FormMessage/>
+      </FormItem>
+    </FormField>
+
+    <FormField v-slot="{ componentField }" name="bio">
+      <FormItem>
+        <FormLabel> Био </FormLabel>
+        <FormControl>
+          <Textarea v-bind="componentField" />
+        </FormControl>
+        <FormDescription>
+          Напишите что-нибудь
+        </FormDescription>
+        <FormMessage/>
+      </FormItem>
+    </FormField>
+
+    <div class="flex gap-4">
+      <Button type="submit">
+        Применить
+      </Button>
+      <Button variant="outline" @click.prevent="onReset">
+        Сбросить
+      </Button>
+    </div>
+  </form>
 </template>

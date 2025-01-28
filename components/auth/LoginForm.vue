@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import FormConstructor from "~/components/auth/AuthFormConstructor.vue";
+import AuthFormConstructor from "~/components/auth/AuthFormConstructor.vue";
 import { toTypedSchema } from "@vee-validate/zod";
 import { useForm } from "vee-validate";
 import { useToast } from "~/components/ui/toast";
@@ -18,9 +18,9 @@ const onSubmit = handleSubmit(async ({ login, password }) => {
     body: { login, password }
   }).then((response) => {
     response.success && router.push('/')
-  } ).catch((error) => {
+  }).catch((error) => {
     toast({
-      title: 'Ошибка при создании пользователя!',
+      title: 'Ошибка входа!',
       description: error.data.message,
       variant: 'destructive'
     })
@@ -41,5 +41,5 @@ const formData = {
 </script>
 
 <template>
-  <FormConstructor :data="formData"/>
+  <AuthFormConstructor :data="formData"/>
 </template>

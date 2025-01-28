@@ -8,6 +8,7 @@ interface IFormConstructorField {
   type: 'string' | 'password'
   component: Component
   description: string
+  props?: any
 }
 
 interface IFormConstructorData {
@@ -27,12 +28,13 @@ const emits = defineEmits(['update:modelValue'])
 
 <template>
   <div class="w-full">
-    <form @submit="data.submitAction" class="space-y-3" @update="() => console.log('uop')">
+    <form @submit="data.submitAction" class="space-y-3">
       <FormField v-for="field in data.fields" v-slot="{ componentField }" :name="field.key">
         <FormItem>
           <FormLabel>{{ field.display }} </FormLabel>
           <FormControl>
-            <component :is="field.component" v-bind="componentField"/>
+            {{ componentField }}
+            <component :is="field.component" v-bind="componentField" :items="field?.items"/>
           </FormControl>
           <FormDescription>
             {{ field.description }}

@@ -6,7 +6,7 @@ import { useToast } from "~/components/ui/toast";
 import { userRegisterSchema } from "~/validation-schemas/user/registerSchema";
 
 const { toast } = useToast()
-
+const emits = defineEmits(['update:formType'])
 const { handleSubmit } = useForm({
   validationSchema: toTypedSchema(userRegisterSchema)
 })
@@ -21,6 +21,7 @@ const onSubmit = handleSubmit(async ({ login, password, firstName, lastName }) =
       description: response.message,
       variant: 'success',
     })
+    emits('update:formType', 'login')
   }).catch(error => {
     toast({
       title: 'Ошибка при создании пользователя!',

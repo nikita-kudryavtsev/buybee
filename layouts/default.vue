@@ -1,7 +1,5 @@
 <script setup lang="ts">
-
 import Header from "~/components/app/header/Header.vue";
-
 </script>
 
 <template>
@@ -10,6 +8,3 @@ import Header from "~/components/app/header/Header.vue";
     <slot/>
   </div>
 </template>
-
-<style scoped>
-</style>
