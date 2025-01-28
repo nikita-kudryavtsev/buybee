@@ -25,7 +25,7 @@ const onApplyFilters = (payload: any) => {
     <div class="w-3/4">
       <AppBreadscrumb class="flex justify-center"/>
       <div class="flex flex-wrap content-start p-4">
-        <NuxtLink v-for="product in products" :to="/product/`${product.id}`" class="w-1/4 p-3">
+        <NuxtLink v-for="product in products" class="w-1/4 p-3">
           <ProductCard :item="product" />
         </NuxtLink>
       </div>
