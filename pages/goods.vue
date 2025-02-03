@@ -1,7 +1,7 @@
 <script setup lang="ts">
-definePageMeta({
-  middleware: 'auth'
-})
+// definePageMeta({
+//   middleware: 'auth'
+// })
 import Filters from "~/components/goods/Filters.vue";
 </script>
 

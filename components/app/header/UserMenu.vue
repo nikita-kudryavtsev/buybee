@@ -1,23 +1,22 @@
 <script setup lang="ts">
 import { Avatar } from "~/components/ui/avatar";
 import { DropdownMenu } from "~/components/ui/dropdown-menu";
-import { SettingsIcon, HeartIcon, ScissorsIcon, LogOutIcon, MailIcon} from "lucide-vue-next";
+import { SettingsIcon, ScissorsIcon, LogOutIcon, MailIcon} from "lucide-vue-next";
+import type { IPublicUserData } from "~/types/user";
 
 const router = useRouter()
 
-const { userData } = storeToRefs(useUserStore())
+const userData = useState<IPublicUserData | null>('user')
 
 const menuItems = [
   { label: 'Промокоды', to: '/user/promocodes', icon: ScissorsIcon },
-  { label: 'Избранное', to: '/user/favorites', icon: HeartIcon },
   { label: 'Профиль', to: '/user/settings', icon: SettingsIcon },
   { label: 'Сообщения', to: '/user/messages', icon: MailIcon },
 ]
 
-const userStore = useUserStore()
-
 const onLogout = () => {
-  userStore.setUserData(null)
+  $fetch('api/auth/logout', { method: 'post'});
+  userData.value = null
 }
 
 const goToAuthPage = () => router.push('/auth')
@@ -50,7 +49,7 @@ const goToAuthPage = () => router.push('/auth')
       <DropdownMenuGroup>
 
         <NuxtLink v-for="item in menuItems" :key="item.to" :to="item.to">
-          <DropdownMenuItem>
+          <DropdownMenuItem class="hover:cursor-pointer">
             <component :is="item.icon"/>
             {{ item.label }}
           </DropdownMenuItem>
@@ -58,7 +57,7 @@ const goToAuthPage = () => router.push('/auth')
 
       </DropdownMenuGroup>
       <DropdownMenuSeparator />
-      <DropdownMenuItem @click="onLogout">
+      <DropdownMenuItem @click="onLogout" class="hover:cursor-pointer">
         <LogOutIcon/>
         Выйти
       </DropdownMenuItem>

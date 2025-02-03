@@ -1,51 +1,69 @@
 <script setup lang="ts">
 import { useProductQuery } from "~/queries/product";
+import { Badge } from "~/components/ui/badge";
+import useBasketItem from "~/composables/useBasketItem";
+
 const route = useRoute()
+import FavoritesButton from "~/components/app/favorites/FavoritesButton.vue";
+import BasketCounter from "~/components/app/basket/BasketCounter.vue";
+import ProductCarousel from "~/components/app/product/ProductCarousel.vue";
 
-const { data, isLoading } = useProductQuery(route.params.id)
+const {data, isLoading} = useProductQuery(route.params.id as string)
+const {currentProdInBasket, addToBasket} = useBasketItem(data)
 
-onMounted(() => {
-  console.log(route.params.id)
+const characteristics = computed(() => {
+  if (!data.value?.characterisics) return []
+  else {
+    try {
+      return JSON.parse(data.value.characterisics)
+    } catch (e) {
+      return []
+    }
+  }
 })
 
-const something = [
-  { display: 'Характеристика', value: '333'},
-  { display: 'Характеристика', value: '333'},
-  { display: 'Характеристика', value: '333'},
-  { display: 'Характеристика', value: '333'},
-  { display: 'Характеристика', value: '333'},
-  { display: 'Характеристика', value: '333'},
-  { display: 'Характеристика', value: '333'},
-  { display: 'Характеристика', value: '333'},
-  { display: 'Характеристика', value: '333'},
-  { display: 'Характеристика', value: '333'},
-  { display: 'Характеристика', value: '333'},
-]
+const breadCrumbsItems = computed(() => [
+  { display: 'Электроника', to: '/electronics'},
+  { display: 'Телефоны', to: '/electronics/phones'},
+  { display: data.value?.display },
+])
 </script>
 
 <template>
-  <AppBreadscrumb/>
-  <div v-if="!isLoading" class="flex gap-4 justify-around">
-    <div class="w-[500px] h-[400px] bg-red-200" >
+  <section v-if="data" class="flex justify-center pb-4">
+    <AppBreadscrumb :items="breadCrumbsItems"/>
+  </section>
+  <section v-if="!isLoading && data" class="flex gap-4 justify-around pt-4">
+    <div class="w-2/3 h-[500px] flex items-center justify-center">
       <div class="flex justify-center">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbT9VQsYgjyF2ga1lUWTXEDckFcDwUoPW-Rw&s" alt="">
+        <ProductCarousel :urls="JSON.parse(data.imgUrls || '[]')"/>
       </div>
     </div>
 
-    <div class="flex flex-col gap-6 border-2 p-6 rounded-lg">
+    <article class="flex flex-col gap-6 border-2 p-6 rounded-lg w-1/3">
       <div class="text-xl">{{ data.display }}</div>
-
+      <Badge class="text-xl w-fit bg-green-600">{{ data.price }} ₽</Badge>
       <div>
-        <div v-for="item in something" class="border-b-2 flex">
-          <div class="w-[500px] text-gray-500">{{ item.display }}</div>
+        <div v-for="item in characteristics" class="border-b-2 flex">
+          <div class="text-gray-500">{{ item.display }}</div>
           <div>{{ item.value }}</div>
         </div>
       </div>
 
-<!--      <div> {{ data.price }} ₽</div>-->
-      <Button class="w-full">Купить за {{ data.price}} ₽</Button>
-    </div>
-  </div>
+      <div class="flex justify-center items-center">
+        <Button v-if="!currentProdInBasket" @click="addToBasket">Добавить в корзину</Button>
+
+        <div v-else class="flex gap-3 items-center">
+          <NuxtLink to="/basket">
+            <Button>Перейти в корзину</Button>
+          </NuxtLink>
+          <BasketCounter :data="data"/>
+        </div>
+
+        <FavoritesButton :item="data"/>
+      </div>
+    </article>
+  </section>
 </template>
 
 <style scoped>

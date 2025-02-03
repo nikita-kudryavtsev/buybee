@@ -21,7 +21,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "embla-carousel-autoplay": "^8.3.1",
-    "embla-carousel-vue": "^8.3.1",
+    "embla-carousel-vue": "^8.5.2",
     "jsonwebtoken": "^9.0.2",
     "lucide-vue-next": "^0.456.0",
     "nuxt": "^3.14.159",
@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "@prisma/client": "^5.22.0",
-    "@vueuse/core": "^11.2.0",
+    "@vueuse/core": "^11.3.0",
     "@vueuse/nuxt": "^11.2.0",
     "prisma": "^5.22.0",
     "shadcn-nuxt": "^0.11.2",

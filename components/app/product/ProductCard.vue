@@ -3,9 +3,9 @@ const props = defineProps<{ item: any }>()
 </script>
 
 <template>
-  <div class="w-48 h-fit" >
+  <div class="w-40 h-fit space-y-3">
     <div class="flex justify-center">
-      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbT9VQsYgjyF2ga1lUWTXEDckFcDwUoPW-Rw&s" alt="">
+      <img :src="JSON.parse(item.imgUrls || '[]')[0]" alt="">
     </div>
 
     <div class="text-center">
@@ -13,6 +13,8 @@ const props = defineProps<{ item: any }>()
       {{ item.display }}
       <div class="text-gray-500"> {{ item.description }}</div>
     </div>
+
+    <slot name="bottom"/>
   </div>
 </template>
 

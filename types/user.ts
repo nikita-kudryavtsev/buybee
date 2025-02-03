@@ -3,6 +3,7 @@ export interface IPublicUserData {
   lastName: string;
   login: string;
   bio?: string;
+  profilePhoto: string;
 }
 
 export interface IPrivateUserData extends IPublicUserData {

@@ -3,7 +3,7 @@
 </script>
 
 <template>
-<div>year</div>
+<div>work in progress...</div>
 </template>
 
 <style scoped>

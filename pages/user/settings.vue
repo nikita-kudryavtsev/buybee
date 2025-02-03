@@ -9,18 +9,9 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/comp
 import { useRolesQuery } from "~/queries/roles";
 import { editUserSchema } from "~/validation-schemas/user/editSchema";
 
-const userStore = useUserStore()
-
 const { data: roleList } = useRolesQuery()
 
-const setUserData = () => {
-  return httpClient('/api/user/get-user').then(response => userStore.setUserData(response))
-}
-
-onMounted(async () => {
-  if (!userStore.userData) await setUserData()
-  setValues(userStore.userData)
-})
+const userData = useState('user')
 
 const { handleSubmit, setValues} = useForm({
   validationSchema: toTypedSchema(editUserSchema),
@@ -41,7 +32,8 @@ const onSubmit = handleSubmit(async (values) => {
   })
 })
 
-const onReset = () => setValues(userStore.userData)
+watch(userData, (val) => val && setValues(val), { immediate: true, deep: true, once: true })
+const onReset = () => setValues(userData.value!)
 </script>
 
 <template>

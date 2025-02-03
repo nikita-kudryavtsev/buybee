@@ -1,9 +1,6 @@
 <script setup lang="ts">
-
 import { useCategoriesQuery } from "~/queries/categories";
-
 const { data: linksData } = useCategoriesQuery()
-
 </script>
 
 <template>

@@ -24,5 +24,11 @@ const formComponent = computed(() => formType.value === 'login' ? LoginForm : Re
     <KeepAlive>
       <component :is="formComponent" v-model:form-type="formType"/>
     </KeepAlive>
+
+    <NuxtLink to="/" >
+      <Button variant="ghost" class="w-full mt-3">
+        Продолжить без авторизации
+      </Button>
+    </NuxtLink>
   </div>
 </template>

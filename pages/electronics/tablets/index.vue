@@ -12,13 +12,13 @@ const filters = ref({})
 const { data: products, refetch } = useProductsQuery(filters)
 
 const onApplyFilters = (payload: any) => {
-  filters.value = { group: 'phones', ...payload }
+  filters.value = { group: 'tablets', ...payload }
   refetch()
 }
 
 const breadcrumbs = ref([
   { display: 'Электроника', to: '/electronics'},
-  { display: 'Телефоны' },
+  { display: 'Планшеты' },
 ])
 </script>
 
@@ -33,7 +33,7 @@ const breadcrumbs = ref([
     <div class="w-3/4">
 
       <div class="flex flex-wrap content-start p-4">
-        <NuxtLink v-for="product in products" :to="`phones/${product.id}`" class="w-1/4 p-3">
+        <NuxtLink v-for="product in products" :to="`tablets/${product.id}`" class="w-1/4 p-3">
           <ProductCard :item="product" />
         </NuxtLink>
       </div>

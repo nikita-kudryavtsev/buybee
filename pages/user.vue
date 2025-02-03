@@ -3,12 +3,11 @@ import { Separator } from "radix-vue";
 import { HeartIcon, MailIcon, ScissorsIcon, SettingsIcon } from "lucide-vue-next";
 import { cn } from "~/lib/utils/utils";
 
-definePageMeta({
-  middleware: 'auth'
-})
+// definePageMeta({
+//   middleware: 'auth'
+// })
 const tabs = [
   { label: 'Промокоды', href: '/user/promocodes', icon: ScissorsIcon },
-  { label: 'Избранное', href: '/user/favorites', icon: HeartIcon },
   { label: 'Профиль', href: '/user/settings', icon: SettingsIcon },
   { label: 'Сообщения', href: '/user/messages', icon: MailIcon },
 ];

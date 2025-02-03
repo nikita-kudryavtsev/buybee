@@ -1,21 +1,16 @@
 <script setup lang="ts">
 
 import { BreadcrumbItem, BreadcrumbList, BreadcrumbSeparator, BreadcrumbLink, Breadcrumb, BreadcrumbPage } from "~/components/ui/breadcrumb";
-import { Slash } from 'lucide-vue-next'
-// const props = defineProps<{
-//   items: any[]
-// }>()
-const items = [
-  { display: 'Электроника', to: '/electronics'},
-  { display: 'Телефоны', to: '/'},
-  // { display: '', to: ''}
-    ]
+
+const props = defineProps<{
+  items: any[]
+}>()
 </script>
 
 <template>
-  <Breadcrumb>
+  <Breadcrumb >
     <BreadcrumbList>
-      <template v-for="item in [...items.slice(0, -1)]">
+      <template v-for="item in [...items?.slice(0, -1)]">
         <BreadcrumbItem >
           <BreadcrumbLink>
             <NuxtLink :to="item.to" >
@@ -24,12 +19,10 @@ const items = [
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator/>
-
-        <BreadcrumbItem>
-          <BreadcrumbPage>{{ items?.[items.length - 1].display }}</BreadcrumbPage>
-        </BreadcrumbItem>
       </template>
-
+      <BreadcrumbItem>
+        <BreadcrumbPage>{{ items[items.length - 1].display }}</BreadcrumbPage>
+      </BreadcrumbItem>
     </BreadcrumbList>
   </Breadcrumb>
 </template>

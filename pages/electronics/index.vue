@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { useProductGroups } from "~/queries/product-groups";
 
-const { data: electronics } = useProductGroups('electronics')
+const {data: electronics} = useProductGroups('electronics')
 
 definePageMeta({
   name: 'electronics',
-  middleware: 'auth',
 })
 
 </script>
@@ -13,16 +12,16 @@ definePageMeta({
 <template>
   <div class="flex overflow-auto flex-wrap justify-around gap-4">
     <NuxtLink v-for="electronic in electronics" class="w-60" :to="electronic.url">
-      <article>
+      <article class="flex flex-col justify-center items-center" :class="{'opacity-50' : !electronic.url}">
 
-        <img src="https://ir-3.ozone.ru/s3/cms/f5/t82/wc250/3.jpg" alt="">
-        <!--        <div :style="electronic.background" class="h-60 w-full rounded-lg mb-2"/>-->
+        <img :src="electronic.imgUrl" alt="image" class="rounded-2xl w-52">
         <div class="text-center">
           {{ electronic.display }}
         </div>
       </article>
     </NuxtLink>
   </div>
+
 </template>
 
 <style scoped>

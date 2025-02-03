@@ -1,6 +1,7 @@
 import { BabyIcon, PlaneIcon, BellRingIcon, HomeIcon, PlugIcon, ShirtIcon, PercentIcon, BedIcon } from "lucide-vue-next";
+import type { ICategory } from "~/types/category";
 
-export default function (iconName: string) {
+export default function (iconName: ICategory['icon']) {
   switch (iconName) {
     case 'baby': return BabyIcon;
     case 'plain': return PlaneIcon;

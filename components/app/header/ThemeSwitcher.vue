@@ -9,7 +9,7 @@ const changeColorMode = () => {
 </script>
 
 <template>
-  <Button variant="ghost" size="icon" @click="changeColorMode">
+  <Button variant="ghost" @click="changeColorMode" class="!m-1">
     <Moon v-if="colorMode.value === 'light'" />
     <Sun v-else />
   </Button>

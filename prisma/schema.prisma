@@ -48,6 +48,7 @@ model ProductGroup {
   display     String?
   description String?
   url         String?
+  imgUrl      String?
   categoryId  Int? // Внешний ключ к Category
   category    Category? @relation(fields: [categoryId], references: [id])
   products    Product[] // Связь с продуктами
@@ -58,10 +59,11 @@ model Product {
   name           String
   display        String?
   description    String?
-  url            String?
   price          Float
   productGroupId Int? // Внешний ключ к ProductGroup
   productGroup   ProductGroup? @relation(fields: [productGroupId], references: [id])
   Category       Category?     @relation(fields: [categoryId], references: [id])
   categoryId     Int?
+  characterisics String?
+  imgUrls        String?
 }
